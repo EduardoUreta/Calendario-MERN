@@ -1,6 +1,6 @@
 import express from "express";
 import dotenv from "dotenv";
-import { authRoutes } from "./routes/index.js";
+import { eventsRoutes, usersRoutes } from "./routes/index.js";
 import { dbConnection } from "./database/config.js";
 import cookieParser from "cookie-parser";
 import cors from "cors";
@@ -22,7 +22,8 @@ app.use(cookieParser());
 // CORS
 app.use(cors());
 
-app.use("/api/auth", authRoutes);
+app.use("/api/auth", usersRoutes);
+app.use("/api/events", eventsRoutes);
 
 app.listen(port, () => {
     console.log(`Servidor en puerto ${port}`);

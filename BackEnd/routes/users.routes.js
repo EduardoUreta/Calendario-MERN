@@ -3,8 +3,8 @@ import { AuthController } from "../controllers/index.js";
 import { validateCreateUser, validLogin } from "../middlewares/validators/user.validators.js";
 import { validTokenJWT } from "../utils/jwt.js";
 
-export const authRoutes = Router();
+export const usersRoutes = Router();
 
-authRoutes.post("/new", validateCreateUser, AuthController.createUser);
-authRoutes.post("/login", validLogin, AuthController.loginUser);
-authRoutes.get("/renew-token", validTokenJWT, AuthController.reValidToken);
+usersRoutes.post("/new", validateCreateUser, AuthController.createUser);
+usersRoutes.post("/login", validLogin, AuthController.loginUser);
+usersRoutes.get("/renew-token", validTokenJWT, AuthController.reValidToken);
