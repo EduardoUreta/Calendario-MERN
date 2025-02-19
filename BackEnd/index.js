@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import { authRoutes } from "./routes/index.js";
 import { dbConnection } from "./database/config.js";
 import cookieParser from "cookie-parser";
+import cors from "cors";
 
 dotenv.config();
 
@@ -18,7 +19,8 @@ app.use(express.static("public"));
 app.use(express.json());
 app.use(cookieParser());
 
-// 
+// CORS
+app.use(cors());
 
 app.use("/api/auth", authRoutes);
 
