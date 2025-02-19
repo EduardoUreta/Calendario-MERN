@@ -11,11 +11,6 @@ import { useCalendarStore, useUiStore } from '../../hooks';
 registerLocale("es", es)
 
 export const CalendarModal = () => {
-  const [show, setShow] = useState(false);
-
-  const closeModal = () => setShow(false);
-  const openModal = () => setShow(true);
-
   const [ formValues, setFormValues ] = useState({
     title: '',
     notes: '',
@@ -26,7 +21,7 @@ export const CalendarModal = () => {
   const [ formSubmitted, setFormSubmitted ] = useState(false);
 
   const { isDateModalOpen, closeDateModal } = useUiStore();
-  const { activeEvent } = useCalendarStore();
+  const { activeEvent, startSavingEvent } = useCalendarStore();
   const titleClass = useMemo(() => {
     if(!formSubmitted) return '';
 
@@ -59,6 +54,8 @@ export const CalendarModal = () => {
 
   const onSubmit = (e) => {
     e.preventDefault();
+    console.log('xd');
+    
     setFormSubmitted(true);
 
     const diference = differenceInMinutes(formValues.end, formValues.start);
@@ -73,6 +70,10 @@ export const CalendarModal = () => {
     }
     
     if(formValues.title.length <= 0) return;
+
+    startSavingEvent(formValues);
+    closeDateModal();
+    setFormSubmitted(false);
 
   }
 
@@ -139,17 +140,18 @@ export const CalendarModal = () => {
                     ></textarea>
                     <small id="emailHelp" className="form-text text-muted">Información adicional</small>
                 </div>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={onCloseModal}>
+                        Close
+                    </Button>
+                    <Button type='submit' className="btn btn-primary btn-block" >
+                        <i className="far fa-save"></i>
+                        <span> Guardar</span>
+                    </Button>
+                </Modal.Footer>
             </form>
         </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={onCloseModal}>
-            Close
-          </Button>
-          <Button type='submit' className="btn btn-primary btn-block" onClick={onCloseModal}>
-            <i className="far fa-save"></i>
-            <span> Guardar</span>
-          </Button>
-        </Modal.Footer>
+
       </Modal>
     </>
   );
