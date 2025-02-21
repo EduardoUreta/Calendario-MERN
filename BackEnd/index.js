@@ -20,7 +20,10 @@ app.use(express.json());
 app.use(cookieParser());
 
 // CORS
-app.use(cors());
+app.use(cors({
+  origin: 'http://localhost:5173',
+  credentials: true, 
+}));
 
 app.use("/api/auth", usersRoutes);
 app.use("/api/events", eventsRoutes);

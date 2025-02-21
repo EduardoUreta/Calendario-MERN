@@ -25,9 +25,10 @@ export class AuthController {
         const { email, password} = req.body;
         try {
             const usuario = await Usuario.findOne({ email: email });
+            if(!usuario) return res.status(404).json({message: "Credenciales Inválidas"});
+            
             const validPassword = await verifyPassword(password, usuario.password);
-
-            if(!usuario || !validPassword) throw new Error("Credenciales Inválidas");
+            if(!validPassword) return res.status(404).json({message: "Credenciales Inválidas"});
 
             // Crear Firma JWT
             const token = await generateJWT({
@@ -35,19 +36,11 @@ export class AuthController {
                 name: usuario.name
             });
 
-            return res.cookie('Bearer', token).json({message: "Usuario logueado"});
+            return res.cookie('Bearer', token, { samesite: 'None', secure: true}).json({message: "Usuario logueado"});
         } catch (error) {
             console.log(error);
             res.status(500).json({message: "Error al iniciar sesión"});
         };
-    };
-
-    static reValidToken = async (req, res, next) => {
-        const { _id, name } = req.user;
-
-        const token = await generateJWT({ _id, name });
-
-        res.json({message: token});    
     };
 
 }
