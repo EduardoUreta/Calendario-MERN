@@ -4,6 +4,7 @@ import { eventsRoutes, usersRoutes } from "./routes/index.js";
 import { dbConnection } from "./database/config.js";
 import cookieParser from "cookie-parser";
 import cors from "cors";
+import path from "path";
 
 dotenv.config();
 
@@ -27,6 +28,10 @@ app.use(cors({
 
 app.use("/api/auth", usersRoutes);
 app.use("/api/events", eventsRoutes);
+
+app.use("/*", (req, res) => {
+  res.sendFile(path.join(process.cwd(),"public/index.html"));
+});
 
 app.listen(port, () => {
     console.log(`Servidor en puerto ${port}`);
