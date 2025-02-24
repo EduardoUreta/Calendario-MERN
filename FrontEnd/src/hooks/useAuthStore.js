@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { getEnvVariables, userToken } from "../helpers";
 import Swal from "sweetalert2";
-import { clearErrorMessage, onChecking, onLogin, onLogout } from "../store";
+import { clearErrorMessage, onChecking, onLogin, onLogout, onLogoutCalendar } from "../store";
 import Cookies from 'js-cookie';
 
 // Manejar la interacción auth-store
@@ -99,6 +99,7 @@ export const useAuthStore = () => {
 
     const startLogout = () => {
         Cookies.remove('Bearer');
+        dispatch(onLogoutCalendar());
         dispatch(onLogout());
     };
 

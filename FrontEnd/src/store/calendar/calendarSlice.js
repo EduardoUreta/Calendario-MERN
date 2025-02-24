@@ -3,20 +3,21 @@ import { addHours } from 'date-fns';
 
 const initialState = {
   events: [
-        {
-            _id: new Date().getTime(),
-            title: "Cumpleaños del Jefe",
-            notes: 'Comprar el paste',
-            start: new Date(),
-            end: addHours(new Date(), 2),
-            bgColor: '#fafafa',
-            user: {
-            _id: '123',
-            name: 'Fernando'
-            }
-        }
+        // {
+        //     _id: new Date().getTime(),
+        //     title: "Cumpleaños del Jefe",
+        //     notes: 'Comprar el paste',
+        //     start: new Date(),
+        //     end: addHours(new Date(), 2),
+        //     bgColor: '#fafafa',
+        //     user: {
+        //     _id: '123',
+        //     name: 'Fernando'
+        //     }
+        // }
     ],
-  activeEvent: null
+  activeEvent: null,
+  isLoadingEvent: true,
 };
 
 export const calendarSlice = createSlice({
@@ -44,7 +45,21 @@ export const calendarSlice = createSlice({
             state.activeEvent = null;
         }
     },
+    onLoadEvents: (state, { payload }) => {
+        state.isLoadingEvent = false;
+        payload.forEach(event => {
+            const exists = state.events.some( dbEvent => dbEvent._id === event._id);
+            if(!exists) {
+                state.events.push(event)
+            }
+        });
+    },
+    onLogoutCalendar: (state) => {
+        state.isLoadingEvent = true,
+        state.events = [],
+        state.activeEvent = null;
+    }
   },
 })
 
-export const { onSetActiveEvent, onAddNewEvent, onUpdateEvent, onDeleteEvent } = calendarSlice.actions;
+export const { onSetActiveEvent, onAddNewEvent, onUpdateEvent, onDeleteEvent, onLoadEvents, onLogoutCalendar } = calendarSlice.actions;
