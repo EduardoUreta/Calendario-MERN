@@ -21,7 +21,7 @@ export class EventsController {
         try {
             data.user = req.user._id;
             const newEvent = await Evento.create(data);
-            res.status(201).json({newEvent})
+            res.status(201).json(newEvent)
         } catch (error) {
             res.status(500).json({message: "Internal Server Error"})
         }
@@ -54,7 +54,7 @@ export class EventsController {
             if(!evento) {
                 res.status(200).json({message: "No existe el evento"});
             } else if ( evento && evento.user.toString() !== userId) {
-                res.status(401).json({message: "No estás autorizado para editar este evento"});
+                res.status(401).json({message: "No estás autorizado para eliminar este evento"});
             } else if ( evento && evento.user.toString() === userId) {
                 await Evento.findByIdAndDelete(eventId);
                 res.status(200).json({message: "El evento fue eliminado"});
